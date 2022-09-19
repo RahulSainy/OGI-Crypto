@@ -1,3 +1,5 @@
+MINNING_REWARD = 10
+
 genesis_block = {'previos_hash': '',
                  'index': 0,
                  'transactions': []}
@@ -14,6 +16,8 @@ def hash_block(block):
 def get_blance(partcipant):
     tx_sender = [[tx['ammount'] for tx in block['transactions']
                   if tx['sender'] == partcipant] for block in blockchain]
+    open_tx_sender = [tx['ammount'] for tx in open_transations if tx['sender'] == partcipant]
+    tx_sender.append(open_tx_sender)
     ammount_sent = 0
     for tx in tx_sender:
         if len(tx) > 0:
@@ -32,6 +36,10 @@ def get_last_blockchain_value():
         return None
     return blockchain[-1]
 
+def verify_transaction(transaction):
+    sender_balance = get_blance(transaction['sender'])
+    return sender_balance >= transaction['ammount']
+    
 
 def add_transaction(recipent, sender=owner, ammount=1.0):
     """
@@ -42,9 +50,13 @@ def add_transaction(recipent, sender=owner, ammount=1.0):
 
     """
     transaction = {'sender': sender, 'recipent': recipent, 'ammount': ammount}
-    open_transations.append(transaction)
-    participants.add(sender)
-    participants.add(recipent)
+    
+    if verify_transaction(transaction):
+        open_transations.append(transaction)
+        participants.add(sender)
+        participants.add(recipent)
+        return True
+    return False
 
     # if last_transaction == None:
     #     last_transaction = [1]
@@ -58,7 +70,12 @@ def mine_block():
     # for key in last_block:
     #     value = last_block[key]
     #     hashed_block = hashed_block + str(value)
-    print(hashed_block)
+    reward_transaction = {
+        'sender': 'MINING',
+        'recipent': owner,
+        'ammount': MINNING_REWARD
+    }
+    open_transations.append(reward_transaction)
     block = {'previous_hash': hashed_block,
              'index': len(blockchain),
              'transactions': open_transations}
@@ -114,7 +131,10 @@ while waiting_for_input:
         tx_data = get_transaction_value()
         # tuple unpacking !
         recipent, ammount = tx_data
-        add_transaction(recipent, ammount=ammount)
+        if add_transaction(recipent, ammount=ammount):
+            print('Added Transactions!')
+        else:
+            print('Transactions Failed!')
         print(open_transations)
 
     elif user_choice == '2':
