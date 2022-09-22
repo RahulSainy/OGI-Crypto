@@ -51,7 +51,7 @@ def add_transaction(recipent, sender=owner, ammount=1.0):
     """
     transaction = {'sender': sender, 'recipent': recipent, 'ammount': ammount}
     
-    if verify_transaction(transaction):
+    if  verify_transaction(transaction):
         open_transations.append(transaction)
         participants.add(sender)
         participants.add(recipent)
@@ -75,6 +75,7 @@ def mine_block():
         'recipent': owner,
         'ammount': MINNING_REWARD
     }
+    copied_transactions = open_transations
     open_transations.append(reward_transaction)
     block = {'previous_hash': hashed_block,
              'index': len(blockchain),
@@ -113,6 +114,15 @@ def verify_chain():
             return False
     return True
 
+def verify_transactions():
+    return all([verify_transaction(tx) for tx in open_transations])
+    # is_valid = True
+    # for tx in open_transations:
+    #  if verify_transaction(tx):
+    #     is_valid = True
+    # else:
+    #     is_valid = False   
+    # return is_valid
 
 waiting_for_input = True
 
@@ -122,6 +132,7 @@ while waiting_for_input:
     print("2. Mine New Block ")
     print("3. Output The Blockchain Block")
     print("4. Output The Participants")
+    print("5.Check Transaction Validity ")
 
     print("h. Manipulate the chain")
     print("q: Quit")
@@ -144,6 +155,13 @@ while waiting_for_input:
         print_blockchain_elements()
     elif user_choice == '4':
         print(participants)
+    elif user_choice == '5':
+        print("runs")
+        if verify_transactions():
+            print("All Transacitons Are Valid")
+        else:
+            print("Invalid Transactions")
+
     elif user_choice == 'h':
         if len(blockchain) >= 1:
             blockchain[0] = {'previos_hash': '',
