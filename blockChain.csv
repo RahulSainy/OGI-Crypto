@@ -1,2 +1,0 @@
-[{'previos_hash': '', 'index': 0, 'transactions': [], 'proof': 100}, {'previous_hash': '78b024ec3d8ba42b5bb91948fe895efca5e55b9479f132cb1d33369e27d2b657', 'index': 1, 'transactions': [OrderedDict([('sender', 'MINING'), ('recipent', 'Max'), ('ammount', 10)])], 'proof': 657}, {'previous_hash': '1100131ca86fe758f510826d75f0b1be7a774598f4f2afa1293d481b3354d861', 'index': 2, 'transactions': [OrderedDict([('sender', 'MINING'), ('recipent', 'Max'), ('ammount', 10)])], 'proof': 84}]
-[OrderedDict([('sender', 'Max'), ('recipent', 'Mau'), ('ammount', 10.5)])]
