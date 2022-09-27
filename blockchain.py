@@ -2,12 +2,17 @@ from functools import reduce
 import hashlib as hl
 import json
 
+
 # import pickle
 
-import hash_util
+# import util.hash_util as hash_util - or
+# from util import hash_util,verifiaction -  or
+from utility.hash_util import hash_block
+from utility.verifiaction import Verification
 from transaction import Transaction
+
 from block import Block
-from verifiaction import Verification
+from utility.verifiaction import Verification
 
 
 MINNING_REWARD = 10
@@ -104,7 +109,7 @@ class Blockchain:
 
     def proof_of_work(self):
         last_block = self.__chain[-1]
-        last_hash = hash_util.hash_block(last_block)
+        last_hash = hash_block(last_block)
         proof = 0
         # used instance method now uses direct method callling using decorator
         # verifier = Verification()
@@ -175,7 +180,7 @@ class Blockchain:
 
     def mine_block(self):
         last_block = self.chain[-1]
-        hashed_block = hash_util.hash_block(last_block)
+        hashed_block = hash_block(last_block)
         proof = self.proof_of_work()
         # for key in last_block:
         #     value = last_block[key]
