@@ -157,6 +157,8 @@ class Blockchain:
         :amount: The amount Of Coins ( default = 1.0).
 
         """
+        if self.hosting_node == None:
+            return False
         transaction = Transaction(sender, recipient, amount)
         # transaction = {'sender': sender, 'recipient': recipient, 'amount': amount}
         #######
@@ -179,6 +181,8 @@ class Blockchain:
         # blockchain.append([last_transaction, transaction_amount])
 
     def mine_block(self):
+        if self.hosting_node == None:
+            return False
         last_block = self.chain[-1]
         hashed_block = hash_block(last_block)
         proof = self.proof_of_work()
